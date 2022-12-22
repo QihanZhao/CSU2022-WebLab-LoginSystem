@@ -12,9 +12,44 @@
     <form action="/login" method="post" id="loginForm">
         <label>姓名<input type="text" name="uname"></label> <br>
         <label>密码<input type="text" name="upwd"></label><br>
-        <button type="button">登录</button>
-        <button type="button">注册</button>
+<!--        <button type="button">登录</button>-->
+        <button id="weather" type="button">注册</button>
     </form>
+
+    <script>
+        let weather = document.getElementById("weather")
+
+        weather.addEventListener("click", function (e) {
+
+            // Step1 创建请求对象
+            let rqst;
+            if (window.XMLHttpRequest) rqst = new XMLHttpRequest();
+            else rqst = new ActiveXObject("Microsoft.XMLHTTP");
+
+            // (Optional) 设置超时
+            // xhr.timeout = 2000;
+            // xhr.ontimeout = () => {
+            //     console.log("Time Out!!!")
+            // }
+
+            // Step2 设置请求对象的请求行/请求头
+            let url = "http://localhost:8080/lp/sr1";
+            rqst.open('GET', url, true);
+
+            // Step3 设置回调函数
+            rqst.onreadystatechange = () => {
+                if (rqst.readyState === 4 && rqst.status === 200) {
+                    const rsps = JSON.parse(rqst.response);
+                    console.log(rsps)
+                }
+            }
+
+            // Step4 发送请求（请求体作为参数, Get方法则为null）
+            rqst.send(null)
+
+        })
+    </script>
 </body>
+
 
 </html>
