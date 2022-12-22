@@ -9,44 +9,56 @@
 </head>
 
 <body>
-    <form action="/login" method="post" id="loginForm">
-        <label>姓名<input type="text" name="uname"></label> <br>
-        <label>密码<input type="text" name="upwd"></label><br>
-<!--        <button type="button">登录</button>-->
-        <button id="weather" type="button">注册</button>
+    <form  id="loginForm">
+        <label>姓名<input id="uname" type="text" name="uname"></label> <br>
+        <label>密码<input id="upwd" type="text" name="upwd"></label><br>
+        <button id="login" type="button">登录</button>
+        <button id="register" type="button">注册</button>
     </form>
 
     <script>
-        let weather = document.getElementById("weather")
-
-        weather.addEventListener("click", function (e) {
-
-            // Step1 创建请求对象
-            let rqst;
-            if (window.XMLHttpRequest) rqst = new XMLHttpRequest();
-            else rqst = new ActiveXObject("Microsoft.XMLHTTP");
-
-            // (Optional) 设置超时
-            // xhr.timeout = 2000;
-            // xhr.ontimeout = () => {
-            //     console.log("Time Out!!!")
-            // }
-
-            // Step2 设置请求对象的请求行/请求头
-            let url = "http://localhost:8080/lp/sr1";
+        let register = document.getElementById("register")
+        register.addEventListener("click", function (e) {
+                // Step1 创建请求对象
+            let rqst = new XMLHttpRequest();
+                // Step2 设置请求对象的请求行/请求头
+            let userName = document.getElementById('uname').value;
+            let userPwd = document.getElementById('upwd').value;
+            const api = "http://localhost:8080/lp/register?"
+            let url = api + `uname=${userName}` + `&upwd=${userPwd}`
             rqst.open('GET', url, true);
+                // Step3 设置回调函数
+            rqst.onreadystatechange = () => {
+                if (rqst.readyState === 4 && rqst.status === 200) {
+                    const rsps = JSON.parse(rqst.response);
+                    console.log(rsps)
+                    window.location.href="http://localhost:8080/lp/index.jsp";
+                }
+            }
+                // Step4 发送请求（请求体作为参数, Get方法则为null）
+            rqst.send(null)
+        })
 
+        let login = document.getElementById("login")
+        login.addEventListener("click", function (e) {
+            // Step1 创建请求对象
+            let rqst = new XMLHttpRequest();
+            // Step2 设置请求对象的请求行/请求头
+            let userName = document.getElementById('uname').value;
+            let userPwd = document.getElementById('upwd').value;
+            const api = "http://localhost:8080/lp/login?"
+            let url = api + `uname=${userName}` + `&upwd=${userPwd}`
+            rqst.open('GET', url, true);
             // Step3 设置回调函数
             rqst.onreadystatechange = () => {
                 if (rqst.readyState === 4 && rqst.status === 200) {
                     const rsps = JSON.parse(rqst.response);
                     console.log(rsps)
+                    // window.location.href="http://localhost:8080/lp/index.jsp";
                 }
             }
-
             // Step4 发送请求（请求体作为参数, Get方法则为null）
             rqst.send(null)
-
         })
     </script>
 </body>
