@@ -53,8 +53,13 @@
             rqst.onreadystatechange = () => {
                 if (rqst.readyState === 4 && rqst.status === 200) {
                     const rsps = JSON.parse(rqst.response);
-                    console.log(rsps)
-                    // window.location.href="http://localhost:8080/lp/index.jsp";
+                    console.log(rsps);
+                    console.log(rsps.code);
+                    console.log(rsps.user["userName"]);
+                    if(rsps.code === 1 && rsps.user["userName"] === 'admin'){
+                        window.location.href="http://localhost:8080/lp/manage.html";
+                    }
+
                 }
             }
             // Step4 发送请求（请求体作为参数, Get方法则为null）

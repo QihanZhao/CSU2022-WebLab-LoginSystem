@@ -27,7 +27,7 @@ public class JdbcUtil {
     public static Connection getConnection() throws SQLException {
 
         Connection conn = DriverManager.getConnection(url, user, password);
-        System.out.println("数据库连接成功：" + conn);
+        System.out.println("DB CONNECTION SUCCESS: " + conn);
         return conn;
     }
 

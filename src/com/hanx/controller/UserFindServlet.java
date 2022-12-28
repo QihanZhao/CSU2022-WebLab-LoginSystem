@@ -13,30 +13,22 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet("/login")
-public class UserLoginServlet extends HttpServlet {
+@WebServlet("/find")
+public class UserFindServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String userName,userPwd;
+
+        String userName;
         userName = req.getParameter("uname");
-        userPwd = req.getParameter("upwd");
-        User userToQuery = new User(userName, userPwd);
 
         MessageModel messageModel = new MessageModel();
-        messageModel.setUser(userToQuery);
 
         User userQueried = UserDAO.findUser(userName);
-//        String show = cnt==0 ? "fail" : "success";
 
-        //用户名错误
+        //查询不到
         if(userQueried == null){
             messageModel.setMsg("UserNotExist");
         }
-        //密码错误
-        else if(!userPwd.equals(userQueried.getUserPwd())){
-            messageModel.setMsg("WrongPassWord");
-        }
-        //登陆成功
         else{
             messageModel.setCode(1);
             messageModel.setMsg("Success");

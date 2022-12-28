@@ -2,6 +2,7 @@ package com.hanx.dao;
 
 import com.hanx.entity.User;
 import com.hanx.util.JdbcUtil;
+import org.jcp.xml.dsig.internal.SignerOutputStream;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,10 +15,9 @@ import java.util.Map;
 
 public class UserDAO {
     // 查询所有用户信息
-    public static int findAll() {
+    public static List<User> findAll() {
 
-//        List<Map<String, String>> list = new ArrayList<>();
-        int cnt = 0;
+        List<User> list = new ArrayList<>();
         // SQL语句
         String sql = "select userID, userName, userPwd from tb_user";
 
@@ -32,19 +32,22 @@ public class UserDAO {
             while (rs.next()) {
 
 //                Map<String, String> row = new HashMap<>();
-                System.out.println(rs.getString("userId"));
-                System.out.println(rs.getString("userName"));
-                System.out.println(rs.getString("userPwd"));
-                System.out.println("");
+                User user = new User();
+                user.setUserName(rs.getString("userName"));
+                user.setUserPwd(rs.getString("userPwd"));
+                list.add(user);
 
-                cnt++;
+//                System.out.println(rs.getString("userId"));
+//                System.out.println(rs.getString("userName"));
+//                System.out.println(rs.getString("userPwd"));
+//                System.out.println("");
             }
 
         } catch (SQLException e) {
             System.out.println("数据库查询过程中出现问题...");
         }
 
-        return cnt;
+        return list;
     }
 
     public static int addUser(User user){
@@ -64,51 +67,67 @@ public class UserDAO {
         return cnt;
     }
 
-    public static User loginUser(User userToQuery){
+    public static User findUser(String userName){
         User userQueried = new User();
 
         // SQL语句
-        String sql = "select userName, userPwd from tb_user where userName = " + userToQuery.getUserName();
+        String sql = "select userName, userPwd from tb_user where userName = " + "'" + userName + "'";
 
         try (   // 2.创建数据库连接
                 Connection conn = JdbcUtil.getConnection();
                 // 3.创建语句对象
                 PreparedStatement pstm = conn.prepareStatement(sql);
                 // 4.执行查询
-                ResultSet rs = pstm.executeQuery();) {
+                ResultSet rs = pstm.executeQuery();
+        ){
 
             // 6. 遍历结果集
             while (rs.next()) {
                 userQueried.setUserName(rs.getString("userName"));
                 userQueried.setUserPwd(rs.getString("userPwd"));
+//                System.out.println(userQueried.getUserName());
+//                System.out.println(userQueried.getUserPwd());
             }
 
         } catch (SQLException e) {
-            System.out.println("数据库查询过程中出现问题...");
+            System.out.println("ERRORHERE...");
         }
 
         return userQueried;
     }
 
-    public static int findByName(String userName) {
+    public static int deleteByName(String userName) {
         // SQL语句
         int cnt = 0;
-        String sql = "select * from tb_user where userName = " + userName;
+        String sql = "delete from tb_user where userName = " + "'" + userName + "'";
 
         try ( // 2.创建数据库连接
               Connection conn = JdbcUtil.getConnection();
               // 3. 创建语句对象
               PreparedStatement pstm = conn.prepareStatement(sql);
-              // 4. 执行查询（R）
-              ResultSet rs = pstm.executeQuery();) {
+        ) {
+            cnt = pstm.executeUpdate();
 
-            // 5. 遍历结果集
-            if (rs.next()) {
-                System.out.println(rs.getString("userName"));
-                System.out.println(rs.getString("userPwd"));
-                System.out.println("");
-                cnt++;
-            }
+        } catch (SQLException e) {
+            System.out.println("数据库查询过程中出现问题...");
+        }
+        return cnt;
+    }
+
+    public static int updateByName(String userName, String newPwd) {
+        // SQL语句
+        int cnt = 0;
+        String sql = "update tb_user set userPwd = ? where userName = ? ";
+
+        try ( // 2.创建数据库连接
+              Connection conn = JdbcUtil.getConnection();
+              // 3. 创建语句对象
+              PreparedStatement pstm = conn.prepareStatement(sql);
+        ) {
+            pstm.setString(1,newPwd);
+            pstm.setString(2,userName);
+            cnt = pstm.executeUpdate();
+
         } catch (SQLException e) {
             System.out.println("数据库查询过程中出现问题...");
         }

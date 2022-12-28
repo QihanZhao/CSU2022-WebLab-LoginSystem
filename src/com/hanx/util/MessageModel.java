@@ -3,7 +3,7 @@ package com.hanx.util;
 public class MessageModel {
     private Integer code = 0;  //state: 1=success; 0=failure
     private String msg = "Failure";
-    private Object oject;
+    private Object user;
 
     public Integer getCode() {
         return code;
@@ -21,11 +21,11 @@ public class MessageModel {
         this.msg = msg;
     }
 
-    public Object getOject() {
-        return oject;
+    public Object getUser() {
+        return user;
     }
 
-    public void setOject(Object oject) {
-        this.oject = oject;
+    public void setUser(Object user) {
+        this.user = user;
     }
 }
