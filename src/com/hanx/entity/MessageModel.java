@@ -1,4 +1,4 @@
-package com.hanx.util;
+package com.hanx.entity;
 
 public class MessageModel {
     private Integer code = 0;  //state: 1=success; 0=failure

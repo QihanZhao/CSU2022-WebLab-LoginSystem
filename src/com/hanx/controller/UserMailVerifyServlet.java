@@ -1,8 +1,8 @@
 package com.hanx.controller;
 
-import com.hanx.dao.UserDAO;
-import com.hanx.entity.User;
 import com.hanx.entity.MessageModel;
+import com.hanx.entity.User;
+import com.hanx.util.MailUtil;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -13,34 +13,26 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@WebServlet("/find")
-public class UserFindServlet extends HttpServlet {
+@WebServlet("/verify")
+public class UserMailVerifyServlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        String userName;
-        userName = req.getParameter("uname");
+        String userMail = req.getParameter("umail");
+        String code = MailUtil.generateCode();
+        MailUtil.mailCode.put(userMail,code);
+        MailUtil.send(userMail,code);
 
         MessageModel messageModel = new MessageModel();
-
-        User userQueried = UserDAO.findUser(userName);
-
-        //查询不到
-        if(userQueried == null){
-            messageModel.setMsg("UserNotExist");
-        }
-        else{
+        if(MailUtil.mailCode.get(userMail) != null){
             messageModel.setCode(1);
-            messageModel.setMsg("Success");
-            messageModel.setUser(userQueried);
+            messageModel.setMsg("RegisterSuccess");
+            messageModel.setUser(new User(userMail,code));
         }
-
-        JSONObject jsonObject = new JSONObject(messageModel);
 
         PrintWriter out = resp.getWriter();
         resp.setContentType("application/json;charset=UTF-8");
-//        resp.setCharacterEncoding("UTF-8");
-        out.print(jsonObject);
+        out.print(new JSONObject(messageModel));
         out.flush();
     }
 }

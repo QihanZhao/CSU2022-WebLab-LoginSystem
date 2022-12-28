@@ -1,8 +1,7 @@
 package com.hanx.controller;
 
 import com.hanx.dao.UserDAO;
-import com.hanx.entity.User;
-import com.hanx.util.MessageModel;
+import com.hanx.entity.MessageModel;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
 @WebServlet("/delete")
 public class UserDeleteServlet extends HttpServlet {

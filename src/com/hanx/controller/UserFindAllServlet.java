@@ -2,7 +2,7 @@ package com.hanx.controller;
 
 import com.hanx.dao.UserDAO;
 import com.hanx.entity.User;
-import com.hanx.util.MessageModel;
+import com.hanx.entity.MessageModel;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
