@@ -6,36 +6,96 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="/static/css/login.css">
 </head>
 
-<body>
-    <form  id="loginForm">
-        <label>姓名<input id="uname" type="text" name="uname"></label> <br>
-        <label>密码<input id="upwd" type="text" name="upwd"></label><br>
-        <button id="login" type="button">登录</button>
-        <button id="register" type="button">注册</button>
-    </form>
+<body style="margin:0;">
+    <div class="container" style="position:relative ;">
+        <div class="logo">
+            <img src="/static/img/logo.png" alt="">
+        </div>
+        <div class="right">
+            <div id="nameCard" class="card" >
+                <div class="nav" style="height:40px;">
+                    <div style="color:#2B6CDB;border-bottom:solid 2px #2B6CDB;">账号登录</div>
+                    <div id="mailSwitch" style="cursor:pointer;" onclick=>动态登录</div>
+                </div>
+                <label style="height:50px;"><input id="uname" placeholder="请输入用户名" type="text" name="uname"></label>
+                <label style="height:50px;"><input id="upwd" placeholder="请输入密码" type="password" name="upwd"></label>
+
+                <div style="height:50px;">
+                    <button id="login" type="button">登录</button>
+                    <button id="register" type="button">注册</button>
+                </div>
+                <div id="nameHint" style="height:30px;"></div>
+
+            </div>
+
+            <div id="mailCard" class="card" style="display:none;">
+                <div class="nav" style="height:40px;">
+                    <div id="nameSwitch" style="cursor:pointer;">账号登录</div>
+                    <div style="color:#2B6CDB;border-bottom:solid 2px #2B6CDB;">动态登录</div>
+                </div>
+                <input id="umail" style="height:50px;" placeholder="请输入邮箱" type="text" name="umail">
+                <input id="ucode" style="height:50px;" placeholder="请输入动态验证码" type="text" name="ucode">
+
+                <div style="height:50px;">
+                    <button id="mailLogin" type="button">登录</button>
+                    <button id="mailRegister" type="button">发送验证码</button>
+                </div>
+                <div id="mailHint" style="height:30px;"></div>
+
+            </div>
+            <div class="copyright">版权所有 © 2020 中南大学信息与网络中心.</div>
+        </div>
+    </div>
 
     <script>
+        let mailCard = document.getElementById("mailCard");
+        let nameCard = document.getElementById("nameCard");
+        let mailSwitch = document.getElementById("mailSwitch");
+        let nameSwitch = document.getElementById("nameSwitch");
+        let nameHint = document.getElementById("nameHint");
+        let mailHint = document.getElementById("mailHint");
+        let hint = nameHint;
+        mailSwitch.addEventListener('click', function (e) {
+            nameCard.style.display = "none";
+            mailCard.style.display = "grid";
+            hint = mailHint;
+        });
+        nameSwitch.addEventListener('click', function (e) {
+            mailCard.style.display = "none";
+            nameCard.style.display = "grid";
+            hint = nameHint;
+        })
+
+
         let register = document.getElementById("register")
         register.addEventListener("click", function (e) {
-                // Step1 创建请求对象
+            // Step1 创建请求对象
             let rqst = new XMLHttpRequest();
-                // Step2 设置请求对象的请求行/请求头
+            // Step2 设置请求对象的请求行/请求头
             let userName = document.getElementById('uname').value;
             let userPwd = document.getElementById('upwd').value;
-            const api = "http://localhost:8080/lp/register?"
+            const api = "http://localhost:8080/register?"
             let url = api + `uname=${userName}` + `&upwd=${userPwd}`
             rqst.open('GET', url, true);
-                // Step3 设置回调函数
+            // Step3 设置回调函数
             rqst.onreadystatechange = () => {
                 if (rqst.readyState === 4 && rqst.status === 200) {
                     const rsps = JSON.parse(rqst.response);
-                    console.log(rsps)
-                    window.location.href="http://localhost:8080/lp/index.jsp";
+                    console.log(rsps);
+
+                    if(rsps.code === 1){
+                        hint.innerText = "注册成功，请登录";
+                        hint.style.color = "green";
+                    }else if("UserExists" === rsps.msg){
+                        hint.innerText = "用户已存在，请更换用户名";
+                        hint.style.color = "red";
+                    }
                 }
             }
-                // Step4 发送请求（请求体作为参数, Get方法则为null）
+            // Step4 发送请求（请求体作为参数, Get方法则为null）
             rqst.send(null)
         })
 
@@ -46,7 +106,7 @@
             // Step2 设置请求对象的请求行/请求头
             let userName = document.getElementById('uname').value;
             let userPwd = document.getElementById('upwd').value;
-            const api = "http://localhost:8080/lp/login?"
+            const api = "http://localhost:8080/login?"
             let url = api + `uname=${userName}` + `&upwd=${userPwd}`
             rqst.open('GET', url, true);
             // Step3 设置回调函数
@@ -54,19 +114,80 @@
                 if (rqst.readyState === 4 && rqst.status === 200) {
                     const rsps = JSON.parse(rqst.response);
                     console.log(rsps);
-                    console.log(rsps.code);
-                    console.log(rsps.user["userName"]);
-                    if(rsps.code === 1 && rsps.user["userName"] === 'admin'){
-                        window.location.href="http://localhost:8080/lp/manage.html";
+                    if(rsps.code === 0 && ("UserNotExist" === rsps.msg)){
+                        hint.innerText = "用户不存在";
+                        hint.style.color = "red";
+                    } else if(rsps.code === 0 && ("WrongPassWord" === rsps.msg)){
+                        hint.innerText = "密码错误";
+                        hint.style.color = "red";
+                    } else if (rsps.code === 1 && rsps.user["userName"] === 'admin') {
+                        window.location.href = "http://localhost:8080/manage.html";
+                    } else if(rsps.code === 1){
+                        window.location.href = "http://localhost:8080/index.html";
                     }
+                }
+            }
+            // Step4 发送请求（请求体作为参数, Get方法则为null）
+            rqst.send(null)
+        })
 
+        let mailRegister = document.getElementById("mailRegister");
+        mailRegister.addEventListener("click", function (e) {
+            // Step1 创建请求对象
+            let rqst = new XMLHttpRequest();
+            // Step2 设置请求对象的请求行/请求头
+            let uerMail = document.getElementById('umail').value;
+            // let userPwd = document.getElementById('upwd').value;
+            const api = "http://localhost:8080/verify?";
+            let url = api + `umail=${uerMail}`;
+            console.log(url);
+            rqst.open('GET', url, true);
+            // Step3 设置回调函数
+            rqst.onreadystatechange = () => {
+                if (rqst.readyState === 4 && rqst.status === 200) {
+                    const rsps = JSON.parse(rqst.response);
+                    console.log(rsps)
+                    if(rsps.code === 1){
+                        hint.innerText = "验证码发送成功，请查收";
+                        hint.style.color = "green";
+                    }
+                }
+            }
+            // Step4 发送请求（请求体作为参数, Get方法则为null）
+            rqst.send(null)
+        })
+
+        let mailLogin = document.getElementById("mailLogin");
+        mailLogin.addEventListener("click", function (e) {
+            // Step1 创建请求对象
+            let rqst = new XMLHttpRequest();
+            // Step2 设置请求对象的请求行/请求头
+            let userMail = document.getElementById('umail').value;
+            let userCode = document.getElementById('ucode').value;
+            const api = "http://localhost:8080/mailLogin?"
+            let url = api + `umail=${userMail}` + `&ucode=${userCode}`
+            rqst.open('GET', url, true);
+            // Step3 设置回调函数
+            rqst.onreadystatechange = () => {
+                if (rqst.readyState === 4 && rqst.status === 200) {
+                    const rsps = JSON.parse(rqst.response);
+                    console.log(rsps);
+                    if(rsps.code === 0 && ("UserNotExist" === rsps.msg)){
+                        hint.innerText = "请发送验证码";
+                        hint.style.color = "red";
+                    } else if(rsps.code === 0 && ("WrongCode" === rsps.msg)){
+                        hint.innerText = "验证码错误";
+                        hint.style.color = "red";
+                    } else if(rsps.code === 1){
+                        window.location.href = "http://localhost:8080/index.html";
+                    }
                 }
             }
             // Step4 发送请求（请求体作为参数, Get方法则为null）
             rqst.send(null)
         })
     </script>
-</body>
 
+</body>
 
 </html>

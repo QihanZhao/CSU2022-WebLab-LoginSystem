@@ -1,0 +1,89 @@
+.container {
+    height: 100vh;
+    width: 100vw;
+    background-image: url("/static/img/csu.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    display: grid;
+    grid-template-columns: 6fr 4fr;
+}
+
+.logo {
+    position: absolute;
+    top: 50px;
+    left: 10%;
+}
+
+.right {
+    grid-column-start: 2;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: grid;
+    grid-template-rows: 8fr 1fr;
+    align-items: center;
+    justify-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.card {
+
+    width: calc(100%);
+    display: grid;
+    /* align-content: end; */
+    /* justify-content: center; */
+    height: 320px;
+    width: 405px;
+    align-items: end;
+    justify-items: center;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr) 30px;
+    border: 1px blanchedalmond dashed;
+    background-color: white;
+}
+
+.nav {
+    width: 300px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+}
+
+#uname {
+    background: url("/static/img/user1.png") no-repeat 0px 0px;
+    height: 40px;
+    padding-left: 40px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+#upwd {
+    background: url("/static/img/pass1.png") no-repeat 0px 0px;
+    height: 40px;
+    padding-left: 40px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+#umail {
+    background: url("/static/img/user1.png") no-repeat 0px 5px;
+    height: 40px;
+    padding-left: 40px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+#ucode {
+    background: url("/static/img/pass1.png") no-repeat 0px 5px;
+    height: 40px;
+    padding-left: 40px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+button {
+    height: 40px;
+    width: 105px;
+    background-color: #2368DE;
+    color: white;
+    border: none;
+    border-radius: 5%;
+}
+
+
+

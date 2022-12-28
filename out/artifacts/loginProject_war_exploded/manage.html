@@ -31,7 +31,7 @@
             let rqst = new XMLHttpRequest();
             // Step2 设置请求对象的请求行/请求头
             let userName = document.getElementById('uname').value;
-            const api = "http://localhost:8080/lp/find?"
+            const api = "http://localhost:8080/find?"
             let url = api + `uname=${userName}`
             rqst.open('GET', url, true);
             // Step3 设置回调函数
@@ -102,7 +102,7 @@
         // Step1 创建请求对象
         let rqst = new XMLHttpRequest();
         // Step2 设置请求对象的请求行/请求头
-        let url = "http://localhost:8080/lp/manage";
+        let url = "http://localhost:8080/manage";
         rqst.open('GET', url, true);
         // Step3 设置回调函数
         rqst.onreadystatechange = () => {
@@ -140,7 +140,7 @@
             // Step1 创建请求对象
             let rqst = new XMLHttpRequest();
             // Step2 设置请求对象的请求行/请求头
-            let url = "http://localhost:8080/lp/delete?uname="+ users[id].userName;
+            let url = "http://localhost:8080/delete?uname="+ users[id].userName;
             console.log(url);
             rqst.open('GET', url, true);
             // Step3 设置回调函数
@@ -166,7 +166,7 @@
                 // Step1 创建请求对象
                 let rqst = new XMLHttpRequest();
                 // Step2 设置请求对象的请求行/请求头
-                const api = "http://localhost:8080/lp/update?"
+                const api = "http://localhost:8080/update?"
                 let url = api + `uname=${users[id].userName}` + `&newpwd=${newPwd}`;
                 console.log(url);
                 rqst.open('GET', url, true);

@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,13 +22,10 @@ public class UserLoginServlet extends HttpServlet {
         userName = req.getParameter("uname");
         userPwd = req.getParameter("upwd");
         User userToQuery = new User(userName, userPwd);
-
         MessageModel messageModel = new MessageModel();
         messageModel.setUser(userToQuery);
 
         User userQueried = UserDAO.findUser(userName);
-//        String show = cnt==0 ? "fail" : "success";
-
         //用户名错误
         if(userQueried == null){
             messageModel.setMsg("UserNotExist");
@@ -39,16 +37,23 @@ public class UserLoginServlet extends HttpServlet {
         //登陆成功
         else{
             messageModel.setCode(1);
-            messageModel.setMsg("Success");
+            messageModel.setMsg("LoginSuccess");
             messageModel.setUser(userQueried);
         }
 
-        JSONObject jsonObject = new JSONObject(messageModel);
+        Cookie cookie=new Cookie("name",userName);
+//        cookie.setMaxAge(1000);
+        cookie.setPath(req.getContextPath());
+        resp.addCookie(cookie);
+        System.out.println(cookie);
 
+        JSONObject jsonObject = new JSONObject(messageModel);
         PrintWriter out = resp.getWriter();
         resp.setContentType("application/json;charset=UTF-8");
 //        resp.setCharacterEncoding("UTF-8");
         out.print(jsonObject);
         out.flush();
+
+
     }
 }

@@ -24,19 +24,15 @@ public class UserDeleteServlet extends HttpServlet {
 
         int cnt = UserDAO.deleteByName(userName);
 
-        //用户名错误
         if(cnt == 1){
             messageModel.setCode(1);
-            messageModel.setMsg("Success");
+            messageModel.setMsg("DeleteSuccess");
             messageModel.setUser(1);
         }
 
-        JSONObject jsonObject = new JSONObject(messageModel);
-
         PrintWriter out = resp.getWriter();
         resp.setContentType("application/json;charset=UTF-8");
-//        resp.setCharacterEncoding("UTF-8");
-        out.print(jsonObject);
+        out.print(new JSONObject(messageModel));
         out.flush();
     }
 }

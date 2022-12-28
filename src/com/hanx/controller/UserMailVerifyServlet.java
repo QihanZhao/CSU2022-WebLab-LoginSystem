@@ -26,7 +26,7 @@ public class UserMailVerifyServlet extends HttpServlet {
         MessageModel messageModel = new MessageModel();
         if(MailUtil.mailCode.get(userMail) != null){
             messageModel.setCode(1);
-            messageModel.setMsg("RegisterSuccess");
+            messageModel.setMsg("MailRegisterSuccess");
             messageModel.setUser(new User(userMail,code));
         }
 

@@ -82,11 +82,11 @@ public class UserDAO {
         ){
 
             // 6. 遍历结果集
-            while (rs.next()) {
+            if (rs.next()) {
                 userQueried.setUserName(rs.getString("userName"));
                 userQueried.setUserPwd(rs.getString("userPwd"));
-//                System.out.println(userQueried.getUserName());
-//                System.out.println(userQueried.getUserPwd());
+            }else{
+                return null;
             }
 
         } catch (SQLException e) {

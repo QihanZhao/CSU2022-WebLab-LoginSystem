@@ -1,0 +1,147 @@
+.header {
+    z-index: 5;
+}
+
+.topFix {
+    width: 85%;
+    margin: 0px auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 43px;
+    /* justify-items: space-between; */
+    align-items: end;
+}
+
+.navFix {
+    width: 85%;
+    margin: 0px auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: calc(110px - 43px);
+    align-items: center;
+    /* justify-items: center; */
+}
+
+.navFix .dropdown {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.navFix .dropdown .dropdownContent {
+    display: none;
+}
+
+@keyframes navstretch {
+    from {
+        max-height: 100px;
+    }
+
+    to {
+        max-height: 300px;
+    }
+}
+
+.navFix .dropdown:hover .gap {
+    display: grid;
+    position: absolute;
+    /* top: 20px; */
+    height: 16px;
+    width: 80px;
+    /* background-color: #000; */
+    border-bottom: rgb(0, 153, 255) solid 4px;
+}
+
+.navFix .dropdown:hover .dropdownContent {
+    position: absolute;
+    font-size: 16px;
+    background-color: #f9f9f9;
+    min-width: 45vw;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    padding: 22px 32px;
+    margin-top: 20px;
+
+
+    display: grid;
+    grid-template-areas: "1 2 3 image" "4 5 6 image";
+    grid-template-rows: 1fr 1fr;
+    justify-items: left;
+    align-items: center;
+    z-index: 10;
+    color: #000;
+
+    animation: 1s navstretch linear;
+
+}
+
+.topFix .dropdown {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+
+@keyframes topstretch {
+    from {
+        max-height: 0
+    }
+
+    to {
+        max-height: 500px;
+    }
+}
+
+
+.topFix .dropdown .dropdownContent {
+    display: none;
+
+    /* animation: 1s shrink linear; */
+}
+
+.topFix .dropdown:hover .dropdownContent {
+
+    position: absolute;
+    right: 0;
+    background-color: #f9f9f9;
+    min-width: 25vw;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    margin-top: 10px;
+
+    display: grid;
+    overflow: hidden;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 15px;
+    border-top-color: rgb(235, 156, 24);
+    border-top-width: 5px;
+    border-top-style: solid;
+    justify-items: start;
+    align-items: center;
+    z-index: 100;
+    color: #000;
+
+    animation: 1s topstretch linear;
+
+}
+
+.topFix a {
+    text-decoration: none;
+    color: white;
+}
+
+.topFix .topL a {
+    margin-right: 25px;
+}
+
+.topFix .topR a {
+    margin-left: 25px;
+}
+
+
+.navFix .navL .dropdown {
+    margin-right: 35px;
+}
+
+.navFix .navR .dropdown {
+    margin-left: 35px;
+}

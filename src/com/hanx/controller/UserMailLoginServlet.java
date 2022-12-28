@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +27,6 @@ public class UserMailLoginServlet extends HttpServlet {
         messageModel.setUser(userToQuery);
 
         String userRealCode = MailUtil.mailCode.get(userMail);
-//        String show = cnt==0 ? "fail" : "success";
 
         //用户名错误
         if(userRealCode == null){
@@ -39,15 +39,21 @@ public class UserMailLoginServlet extends HttpServlet {
         //登陆成功
         else{
             messageModel.setCode(1);
-            messageModel.setMsg("LoginSuccess");
+            messageModel.setMsg("MailLoginSuccess");
             messageModel.setUser(new User(userMail,userRealCode));
+            MailUtil.mailCode.remove(userMail);
         }
+
+        Cookie cookie=new Cookie("name",userMail.split("@")[0]);
+//        cookie.setMaxAge(1000);
+        cookie.setPath(req.getContextPath());
+        resp.addCookie(cookie);
+        System.out.println(cookie);
 
         PrintWriter out = resp.getWriter();
         resp.setContentType("application/json;charset=UTF-8");
         out.print(new JSONObject(messageModel));
         out.flush();
 
-        MailUtil.mailCode.remove(userMail);
     }
 }

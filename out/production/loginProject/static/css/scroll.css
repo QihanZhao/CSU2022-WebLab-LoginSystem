@@ -1,0 +1,45 @@
+@keyframes slideshow {
+    0% {
+        left: 0;
+    }
+
+    100% {
+        left: calc((-236px - 20px) * 6);
+    }
+
+}
+
+.scroll {
+    margin-top: 20px;
+    width: 90%;
+    height: 160px;
+    /* border: 2px black dashed; */
+    /* z-index: 20; */
+    position: relative;
+    overflow: hidden;
+
+    display: grid;
+    align-items: center;
+    /* grid-template-columns: 1fr 10fr; */
+}
+
+.scroll .images {
+    position: absolute;
+    display: grid;
+    height: 100%;
+    grid-template-columns: repeat(12, 236px);
+
+    column-gap: 20px;
+    animation: slideshow 10s linear infinite;
+}
+
+.scroll .images:hover {
+    animation-play-state: paused;
+}
+
+.scrol .img {
+    box-sizing: border-box;
+    width: 236px;
+    height: 160px;
+    background-size: cover;
+}
